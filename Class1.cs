@@ -24,7 +24,9 @@ namespace LoginAndProject
         public static TreeNode projectTreeView = new TreeNode(); //项目目录树
         public static bool closeflag = true; //窗口控制
         public static bool proflag = false; //按钮控制
+        public static PushButton prControlButton; //全局定义项目查询按钮
         public static string token; //状态码
+        //public static int addTree = 0; //添加树操作
     }
     public class Class1 : IExternalApplication
     {
@@ -55,15 +57,15 @@ namespace LoginAndProject
 
             //在对应的容器下添加按钮
             PushButton loginButton = logIn.AddItem(logInButtonData) as PushButton; //添加登录按钮
-            PushButton prControlButton = projectControl.AddItem(projectButtonData) as PushButton; //添加项目管理按钮
+            Common.prControlButton = projectControl.AddItem(projectButtonData) as PushButton; //添加项目管理按钮
 
             if (Common.userStatus == 0) //登出状态下
             {
-                prControlButton.Enabled = false; //禁用项目查询按钮
+                Common.prControlButton.Enabled = false; //禁用项目查询按钮
             }
             if(Common.userStatus == 1) //登入状态下
             {
-                prControlButton.Enabled = true; //启用项目查询按钮
+                Common.prControlButton.Enabled = true; //启用项目查询按钮
             }
 
             //美化按钮
@@ -75,7 +77,7 @@ namespace LoginAndProject
             string prcImgPath = Path.GetDirectoryName(thisAssemblyPath) + @"\prc.PNG"; //项目管理图标路径
             Uri prcUri = new Uri(prcImgPath, UriKind.RelativeOrAbsolute); //项目管理图标链接
             BitmapImage bitmapImagePrc = new BitmapImage(prcUri);
-            prControlButton.LargeImage = bitmapImagePrc;
+            Common.prControlButton.LargeImage = bitmapImagePrc;
 
             
             return Result.Succeeded;

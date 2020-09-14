@@ -16,106 +16,106 @@ namespace LoginAndProject
 {
     public partial class FormProjectControl : Form
     {
-        public class ProMessage //查询信息传输类
-        {
-            public string userName { get; set; }
-            public string pwd { get; set; }
-            public string token { get; set; }
-        }
+        //public class ProMessage //查询信息传输类
+        //{
+        //    public string userName { get; set; }
+        //    public string pwd { get; set; }
+        //    public string token { get; set; }
+        //}
         public FormProjectControl()
         {
             InitializeComponent();
 
-            //启动项目管理窗口，拉取数据
-            string projectMessege;
-            ProMessage res = new ProMessage();
-            res.userName = Common.userCode;
-            res.pwd = "";
-            res.token = "";
-            string jsonUserCode = JsonConvert.SerializeObject(res, Formatting.Indented);
+            ////启动项目管理窗口，拉取数据
+            //string projectMessege;
+            //ProMessage res = new ProMessage();
+            //res.userName = Common.userCode;
+            //res.pwd = "";
+            //res.token = "";
+            //string jsonUserCode = JsonConvert.SerializeObject(res, Formatting.Indented);
 
-            var httpWebRequestGet = (HttpWebRequest)WebRequest.Create("http://10.254.40.240:8080/content");
-            httpWebRequestGet.ContentType = "application/json";
-            httpWebRequestGet.Method = "POST";
+            //var httpWebRequestGet = (HttpWebRequest)WebRequest.Create("http://10.254.40.240:8080/content");
+            //httpWebRequestGet.ContentType = "application/json";
+            //httpWebRequestGet.Method = "POST";
 
-            using (var streamWriter = new StreamWriter(httpWebRequestGet.GetRequestStream()))
-            {
-                streamWriter.Write(jsonUserCode);
+            //using (var streamWriter = new StreamWriter(httpWebRequestGet.GetRequestStream()))
+            //{
+            //    streamWriter.Write(jsonUserCode);
 
-            }
+            //}
 
-            var httpResponseGet = (HttpWebResponse)httpWebRequestGet.GetResponse();
-            using (var streamReader = new StreamReader(httpResponseGet.GetResponseStream()))
-            {
-                var resultpr = streamReader.ReadToEnd();
-                projectMessege = resultpr;
+            //var httpResponseGet = (HttpWebResponse)httpWebRequestGet.GetResponse();
+            //using (var streamReader = new StreamReader(httpResponseGet.GetResponseStream()))
+            //{
+            //    var resultpr = streamReader.ReadToEnd();
+            //    projectMessege = resultpr;
 
-            }
-            //
-            //解析
-            //
-            JObject res1 = (JObject)JsonConvert.DeserializeObject(projectMessege);
+            //}
+            ////
+            ////解析
+            ////
+            //JObject res1 = (JObject)JsonConvert.DeserializeObject(projectMessege);
 
-            //TreeNode mainTree = new TreeNode();
-            //mainTree.Tag = "我的项目";
-            //mainTree.Text = "我的项目";
-            Common.projectTreeView.Tag = "我的项目";
-            Common.projectTreeView.Text = "我的项目";
+            ////TreeNode mainTree = new TreeNode();
+            ////mainTree.Tag = "我的项目";
+            ////mainTree.Text = "我的项目";
+            //Common.projectTreeView.Tag = "我的项目";
+            //Common.projectTreeView.Text = "我的项目";
 
-            JArray myPro = (JArray)res1["data"];
-            if (myPro != null)
-            {
-                foreach (JObject i in myPro)
-                {
-                    TreeNode tree1 = new TreeNode();
-                    tree1.Tag = i["name"];
-                    tree1.Text = (string)i["name"];
-                    Common.projectTreeView.Nodes.Add(tree1);
+            //JArray myPro = (JArray)res1["data"];
+            //if (myPro != null)
+            //{
+            //    foreach (JObject i in myPro)
+            //    {
+            //        TreeNode tree1 = new TreeNode();
+            //        tree1.Tag = i["name"];
+            //        tree1.Text = (string)i["name"];
+            //        Common.projectTreeView.Nodes.Add(tree1);
 
-                    JArray proList = (JArray)i["proSubitemList"];
-                    if (proList != null)
-                    {
-                        foreach (JObject j in proList)
-                        {
-                            TreeNode tree2 = new TreeNode();
-                            tree2.Tag = j["name"];
-                            tree2.Text = (string)j["name"];
-                            tree1.Nodes.Add(tree2);
+            //        JArray proList = (JArray)i["proSubitemList"];
+            //        if (proList != null)
+            //        {
+            //            foreach (JObject j in proList)
+            //            {
+            //                TreeNode tree2 = new TreeNode();
+            //                tree2.Tag = j["name"];
+            //                tree2.Text = (string)j["name"];
+            //                tree1.Nodes.Add(tree2);
 
-                            JArray addList = (JArray)j["add"];
-                            if (addList != null)
-                            {
-                                foreach (JObject z in addList)
-                                {
-                                    TreeNode tree3 = new TreeNode();
-                                    tree3.Tag = z["name"];
-                                    tree3.Text = (string)z["name"];
-                                    tree2.Nodes.Add(tree3);
+            //                JArray addList = (JArray)j["add"];
+            //                if (addList != null)
+            //                {
+            //                    foreach (JObject z in addList)
+            //                    {
+            //                        TreeNode tree3 = new TreeNode();
+            //                        tree3.Tag = z["name"];
+            //                        tree3.Text = (string)z["name"];
+            //                        tree2.Nodes.Add(tree3);
 
-                                    JArray add1List = (JArray)z["add"];
-                                    if (add1List != null)
-                                    {
-                                        foreach (JObject p in add1List)
-                                        {
-                                            TreeNode tree4 = new TreeNode();
-                                            tree4.Tag = p["name"];
-                                            tree4.Text = (string)p["name"];
-                                            tree3.Nodes.Add(tree4);
-                                        }
+            //                        JArray add1List = (JArray)z["add"];
+            //                        if (add1List != null)
+            //                        {
+            //                            foreach (JObject p in add1List)
+            //                            {
+            //                                TreeNode tree4 = new TreeNode();
+            //                                tree4.Tag = p["name"];
+            //                                tree4.Text = (string)p["name"];
+            //                                tree3.Nodes.Add(tree4);
+            //                            }
 
-                                    }
+            //                        }
 
-                                }
+            //                    }
 
-                            }
+            //                }
 
-                        }
+            //            }
 
-                    }
+            //        }
 
-                }
+            //    }
 
-            }
+            //}
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -130,20 +130,59 @@ namespace LoginAndProject
 
 
         }
+        /// <summary>
+        /// ClearTreeView
+        /// </summary>
+        /// <param name="node"></param>
+        /// 
+        public void ClearTreeView(TreeNodeCollection node)
+        {
+            foreach (TreeNode n in node)
+            {
+                node.Remove(n);
+                
+            }
+        }
 
         private void FormProjectControl_Load(object sender, EventArgs e)
         {
-           
+            if (Common.userStatus == 1)
+            {
+                //if (treeView1 is null || treeView1.Nodes.Count==0)
+                //{
 
-                if (Common.userStatus == 1)
+                //}
+                //else
+                //{
+                //treeView1.Nodes.Clear();
+
+                // treeView1.Nodes.AddRange(tns);
+
+                //生成目录树
+                
+                for (int item = 0; item < Common.projectTreeView.Nodes.Count; item++)
                 {
-                    //生成目录树
-                    treeView1.Nodes.Add(Common.projectTreeView);
-                    //展开全部
-                    //treeView1.ExpandAll();
 
+                    treeView1.Nodes.Add(Common.projectTreeView.Nodes[item].Clone() as TreeNode);
 
                 }
+                //if (Common.addTree == 0)
+                //{
+                //    TreeNode newTree = new TreeNode();
+                //    newTree = Common.projectTreeView.Nodes[0].Clone;
+                //    treeView1.Nodes.Add(Common.projectTreeView);
+                //    Common.addTree = 1;
+                //}
+                //treeView1.Nodes.Add(Common.projectTreeView.Nodes[0].Clone() as TreeNode);
+
+
+
+
+                //展开全部
+                //treeView1.ExpandAll();
+                //}
+
+            }
 
             
         }
