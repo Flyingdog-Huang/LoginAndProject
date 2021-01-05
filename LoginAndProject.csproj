@@ -68,6 +68,30 @@
     <Compile Include="Class1.cs" />
     <Compile Include="CmdLogin.cs" />
     <Compile Include="CmdProjectControl.cs" />
+    <Compile Include="FormBackFlow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBackFlow.Designer.cs">
+      <DependentUpon>FormBackFlow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormChooseMajor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormChooseMajor.Designer.cs">
+      <DependentUpon>FormChooseMajor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDealFlow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDealFlow.Designer.cs">
+      <DependentUpon>FormDealFlow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDealOpinion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDealOpinion.Designer.cs">
+      <DependentUpon>FormDealOpinion.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,14 +104,53 @@
     <Compile Include="FormProjectControl.Designer.cs">
       <DependentUpon>FormProjectControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormProjectMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormProjectMessage.Designer.cs">
+      <DependentUpon>FormProjectMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormQR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormQR.Designer.cs">
+      <DependentUpon>FormQR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormStartProject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStartProject.Designer.cs">
+      <DependentUpon>FormStartProject.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormBackFlow.resx">
+      <DependentUpon>FormBackFlow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormChooseMajor.resx">
+      <DependentUpon>FormChooseMajor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDealFlow.resx">
+      <DependentUpon>FormDealFlow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDealOpinion.resx">
+      <DependentUpon>FormDealOpinion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormProjectControl.resx">
       <DependentUpon>FormProjectControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormProjectMessage.resx">
+      <DependentUpon>FormProjectMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormQR.resx">
+      <DependentUpon>FormQR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStartProject.resx">
+      <DependentUpon>FormStartProject.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +159,7 @@
     <None Include="packages\Newtonsoft.Json.12.0.3\.signature.p7s" />
     <None Include="packages\Newtonsoft.Json.12.0.3\LICENSE.md" />
     <None Include="packages\Newtonsoft.Json.12.0.3\Newtonsoft.Json.12.0.3.nupkg" />
+    <None Include="Properties\DataSources\Common.datasource" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\AddInManager.dll" />
@@ -189,6 +253,25 @@
     <Content Include="packages\Newtonsoft.Json.12.0.3\lib\portable-net45+win8+wp8+wpa81\Newtonsoft.Json.xml" />
     <Content Include="packages\Newtonsoft.Json.12.0.3\packageIcon.png" />
     <Content Include="prc.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="AxSHDocVw">
+      <Guid>{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="SHDocVw">
+      <Guid>{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

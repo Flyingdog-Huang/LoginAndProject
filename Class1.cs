@@ -13,7 +13,8 @@ using Newtonsoft.Json;
 using System.Web;
 using System.Net;
 using System.Windows.Forms;
-
+using Newtonsoft.Json.Linq;
+using System.Data;
 
 namespace LoginAndProject
 {
@@ -27,6 +28,69 @@ namespace LoginAndProject
         public static PushButton prControlButton; //全局定义项目查询按钮
         public static string token; //状态码
         //public static int addTree = 0; //添加树操作
+        public const string name_project = "projectName";// 母项目tag        
+        public const string name_son_project = "sonProjectName";// 子项目tag
+        //public static JObject allProjectName_Id = new JObject();//所有子项目名字和ID对应
+        public static JObject allProject = new JObject();//母项目对应的子项目ID信息
+        //public const string URL = "http://88.168.3.24:8080/";// 服务器地址
+        public const string URL = "http://10.254.40.225:8080/";// 本地地址
+
+        public static string dataStartProjectId = "";//发起流程的子项id-查询数据
+
+        public static TreeNode subProjectChooseTree = new TreeNode();//子项专业图纸选择树-展示数据
+
+        public static List<JObject> listSubProjectMajor = new List<JObject>();//子项专业图纸信息列表-查询数据
+
+        //图纸选择传递信息
+        public static int flagChoose = 0;
+        public static string majorChooseMessage;
+        public static string nameDrawingChooseMessage;
+        public static string numDrawingChooseMessage;
+        public static JArray checker;
+        public static JArray checkerId;
+        public static JArray auditor;
+        public static JArray auditorId;
+        public static JArray authorizer;
+        public static JArray authorizerId;
+
+        /// <summary>
+        /// 发送请求并获取数据(默认post)
+        /// </summary>
+        /// <returns></returns>
+        public static dynamic AskData(dynamic pushData, string URLType, string method = "POST")
+        {
+            string jsonData = JsonConvert.SerializeObject(pushData, Formatting.Indented);
+
+            var httpWebRequestGet = (HttpWebRequest)WebRequest.Create(URL + URLType);
+            httpWebRequestGet.ContentType = "application/json";
+            httpWebRequestGet.Method = method;
+
+            using (var streamWriter = new StreamWriter(httpWebRequestGet.GetRequestStream()))
+            {
+                streamWriter.Write(jsonData);
+
+            }
+
+            var httpResponseGet = (HttpWebResponse)httpWebRequestGet.GetResponse();
+            using (var streamReader = new StreamReader(httpResponseGet.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                dynamic res = JsonConvert.DeserializeObject(result);
+                return res;
+
+            }
+        }
+
+        // 子项项目信息
+        public static DataTable allSubProjectMessage = new DataTable();
+        // 校审流程信息
+        public static DataTable flowMessage = new DataTable();
+        // 校审流程ID判断处理校审
+        public static bool unicodeFlag = true;
+        // 校审流程ID
+        public static string unicode = "";
+        // 定义全局按钮
+        public static Button button;
     }
     public class Class1 : IExternalApplication
     {
@@ -57,7 +121,10 @@ namespace LoginAndProject
 
             //在对应的容器下添加按钮
             PushButton loginButton = logIn.AddItem(logInButtonData) as PushButton; //添加登录按钮
+      
             Common.prControlButton = projectControl.AddItem(projectButtonData) as PushButton; //添加项目管理按钮
+
+            //MessageBox.Show("__");
 
             if (Common.userStatus == 0) //登出状态下
             {

@@ -15,11 +15,17 @@ using System.Windows.Forms;
 
 namespace LoginAndProject
 {
-    
+
     public partial class FormLogin : Form
     {
+        
+        
+        //// 用户名输入提示文本
+        //public string userText = "请输入一体化用户名";
+        ////密码输入提示文本
+        //public string paswText = "请输入对应密码";
+        
 
-        public static string URL = "http://88.168.3.24:8080/";
         public class LoginMessage //登录信息传输类
         {
             public string userName { get; set; }
@@ -51,6 +57,16 @@ namespace LoginAndProject
                 button2.Enabled = false;
                 Common.prControlButton.Enabled = false;
 
+                ////初始化文本
+                //SetDefaultText1();
+                //SetDefaultText2();
+                ////焦点事件
+                ////得到焦点
+                //textBox1.GotFocus += new EventHandler(textBox1_Enter);
+                //textBox2.GotFocus += new EventHandler(textBox2_Enter);
+                ////失去焦点
+                //textBox1.LostFocus += new EventHandler(textBox1_Leave);
+                //textBox2.LostFocus += new EventHandler(textBox2_Leave);
             }
             else
             {
@@ -69,8 +85,74 @@ namespace LoginAndProject
                 //button2.Enabled = true;
                 Common.prControlButton.Enabled = true;
             }
+
         }
 
+        /// <summary>
+        /// 设置默认提示文本
+        /// </summary>
+        //private void SetDefaultText1()
+        //{
+        //    //默认文本
+        //    textBox1.Text = userText;
+        //    //颜色为灰
+        //    textBox1.ForeColor = Color.Gray;
+        //}
+        //private void SetDefaultText2()
+        //{
+        //    //默认文本
+            
+        //    textBox2.Text = paswText;
+        //    //颜色为灰
+            
+        //    textBox2.ForeColor = Color.Gray;
+        //}
+
+        /// <summary>
+        /// 判断框内是否有文本
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //private void textBox1_Enter(object sender, EventArgs e)
+        //{
+        //    if (textBox1.Text == userText)
+        //    {
+        //        textBox1.Text = "";
+        //    }
+            
+        //    textBox1.ForeColor = Color.Black;
+        //}
+        //private void textBox2_Enter(object sender, EventArgs e)
+        //{
+            
+        //    if (textBox2.Text == paswText)
+        //    {
+        //        textBox2.Text = "";
+        //    }
+        //    textBox2.ForeColor = Color.Black;
+        //}
+
+        /// <summary>
+        /// 离开文本框时通过判断，没有文字显示提示文字，有文字取消提示
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //private void textBox1_Leave(object sender, EventArgs e)
+        //{
+        //    if (String.IsNullOrEmpty(textBox1.Text))
+        //    {
+        //        SetDefaultText1();
+        //    }
+            
+        //}
+        //private void textBox2_Leave(object sender, EventArgs e)
+        //{
+        //    if (String.IsNullOrEmpty(textBox2.Text))
+        //    {
+        //        SetDefaultText2();
+        //    }
+
+        //}
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -91,10 +173,12 @@ namespace LoginAndProject
         {
             if (Common.userStatus == 0) //登出状态下
             {
-                
+
                 string userName = textBox1.Text; //获取用户名
+                //string userName = "2147";
                 Common.userCode = userName;
                 string pwd = textBox2.Text; //获取密码
+                //string pwd = "DT#dt369";
                 string token = "XXX";
 
                 if (userName != null && pwd != null) //如果字段不为空
@@ -110,7 +194,7 @@ namespace LoginAndProject
                     //Console.WriteLine("jsonStr：{0}", jsonStr); //输出试验
                     /* */
                     //推出请求
-                    var httpWebRequest = (HttpWebRequest)WebRequest.Create(URL + "login");
+                    var httpWebRequest = (HttpWebRequest)WebRequest.Create(Common.URL + "login");
                     httpWebRequest.ContentType = "application/json";
                     httpWebRequest.Method = "POST";
 
@@ -133,6 +217,7 @@ namespace LoginAndProject
 
                     if (Common.userStatus == 1) //登陆成功
                     {
+                        
 
                         //禁用文本框和登录按钮
                         textBox1.Enabled = false;
@@ -155,7 +240,7 @@ namespace LoginAndProject
                         res.token = "";
                         string jsonUserCode = JsonConvert.SerializeObject(res, Formatting.Indented);
 
-                        var httpWebRequestGet = (HttpWebRequest)WebRequest.Create(URL + "content");
+                        var httpWebRequestGet = (HttpWebRequest)WebRequest.Create(Common.URL + "content");
                         httpWebRequestGet.ContentType = "application/json";
                         httpWebRequestGet.Method = "POST";
 
@@ -172,15 +257,16 @@ namespace LoginAndProject
                             projectMessege = resultpr;
 
                         }
+
                         //
                         //解析
-                        //
+                        //                        
                         JObject res1 = (JObject)JsonConvert.DeserializeObject(projectMessege);
 
                         //TreeNode mainTree = new TreeNode();
                         //mainTree.Tag = "我的项目";
                         //mainTree.Text = "我的项目";
-                        Common.projectTreeView.Tag = "我的项目";
+                        Common.projectTreeView.Tag = "myProject";
                         Common.projectTreeView.Text = "我的项目";
 
                         JArray myPro = (JArray)res1["data"];
@@ -189,28 +275,47 @@ namespace LoginAndProject
                             foreach (JObject i in myPro)
                             {
                                 TreeNode tree1 = new TreeNode();
-                                tree1.Tag = i["name"];
+                                tree1.Tag = Common.name_project;
                                 tree1.Text = (string)i["name"];
+                                tree1.Name = (string)i["id"];
+                                
                                 Common.projectTreeView.Nodes.Add(tree1);
 
                                 JArray proList = (JArray)i["proSubitemList"];
+
+                                //构建此母项对应的子项ID列表
+                                JArray sonIdList = new JArray();
+
+                                //添加母项目名字和对应的ID到object中
+                                //Common.allProjectName_Id.Add((string)i["name"], (string)i["id"]);
+
                                 if (proList != null)
                                 {
                                     foreach (JObject j in proList)
                                     {
                                         TreeNode tree2 = new TreeNode();
-                                        tree2.Tag = j["name"];
+                                        tree2.Tag = Common.name_son_project;
                                         tree2.Text = (string)j["name"];
+                                        tree2.Name = (string)j["id"];
                                         tree1.Nodes.Add(tree2);
+                                        
+                                        //sonIdList.Add((string)j["projectid"]);
+                                        sonIdList.Add((string)j["id"]);
 
                                         JArray addList = (JArray)j["add"];
+
+                                        //添加子项目名字和对应的ID到object中
+                                        //Common.allProjectName_Id.Add((string)j["name"], (string)j["id"]);
+
                                         if (addList != null)
                                         {
                                             foreach (JObject z in addList)
                                             {
                                                 TreeNode tree3 = new TreeNode();
-                                                tree3.Tag = z["name"];
+                                                tree3.Tag = (string)j["id"];
                                                 tree3.Text = (string)z["name"];
+                                                tree3.Name = Common.name_son_project;
+
                                                 tree2.Nodes.Add(tree3);
 
                                                 JArray add1List = (JArray)z["add"];
@@ -219,8 +324,10 @@ namespace LoginAndProject
                                                     foreach (JObject p in add1List)
                                                     {
                                                         TreeNode tree4 = new TreeNode();
-                                                        tree4.Tag = p["name"];
+                                                        tree4.Tag = (string)j["id"];
                                                         tree4.Text = (string)p["name"];
+                                                        tree4.Name = Common.name_son_project;
+
                                                         tree3.Nodes.Add(tree4);
                                                     }
 
@@ -231,7 +338,10 @@ namespace LoginAndProject
                                         }
 
                                     }
-
+                                    
+                                    Common.allProject.Add(tree1.Text, sonIdList);
+                                    // 注意：JObject不能直接add到JObject中
+                                    //list不能直接add到JObject
                                 }
 
                             }
@@ -264,20 +374,14 @@ namespace LoginAndProject
                         //隐藏窗口
                         //this.Hide();
 
-                        
                         //如何调用Class1中的PushButton prControlButton
-
-
-                        
 
                         //Common.projectTreeView.Nodes.Add(mainTree);
 
-                        
                         //调用项目管理窗口
                         //FormProjectControl formProjectControl = new FormProjectControl();
                         //formProjectControl.ShowDialog();
 
-                        
                     }
                     else //登录失败
                     {
@@ -353,7 +457,7 @@ namespace LoginAndProject
                 //Console.WriteLine("jsonStr：{0}", jsonStr); //输出试验
                 /* */
                 //发送请求
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create(URL + "logout");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Common.URL + "logout");
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
 
@@ -381,8 +485,10 @@ namespace LoginAndProject
                     //初始化
                     Common.token = "";
                     Common.userCode = "";
+                    //清理目录树和子项列表
                     Common.projectTreeView.Nodes.Clear();
-                    
+                    Common.allProject.RemoveAll();
+
                 }
             }
         }
